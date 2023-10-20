@@ -180,9 +180,10 @@ FRESULT ftps_f_opendir(DIR *dp, const char *path)
 		p = get_win_path(path, dp->path);
 	}
 
+	// FIXME: Hack to list \Device\CdRom0
 	// Check that the directory exists
 	DWORD res = GetFileAttributesA(dp->path);
-	if (res == INVALID_FILE_ATTRIBUTES)
+	if (res == INVALID_FILE_ATTRIBUTES && dp->path[0] != 'D')
 	{
 		FILE_DBG("Could not find %s\n", dp->path);
 		return FR_NO_PATH;

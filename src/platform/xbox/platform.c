@@ -128,7 +128,7 @@ void platform_init(int *w, int *h)
     debugMoveCursor(*w / 2 - ((strlen(loading_str) / 2) * 8), *h / 2);
     debugPrint("%s ", loading_str);
 
-    // nxdk automounts D to the root xbe path. Lets undo that
+    // We can't trust D:\ is mounted to CdRom0
     if (nxIsDriveMounted('D'))
     {
         nxUnmountDrive('D');

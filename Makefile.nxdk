@@ -3,6 +3,8 @@ GEN_XISO = $(XBE_TITLE).iso
 NXDK_SDL = y
 NXDK_NET = y
 
+NXDK_DISABLE_AUTOMOUNT_D = y
+
 GIT_COMMIT_HASH := "$(shell git describe --abbrev=7 --always)"
 
 LVGL_DIR = src/libs/lvgl
