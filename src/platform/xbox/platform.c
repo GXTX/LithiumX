@@ -137,6 +137,24 @@ void platform_init(int *w, int *h)
     // Mount the DVD drive
     nxMountDrive('D', "\\Device\\CdRom0");
 
+    // Attempt to set the max spindle speed
+    ANSI_STRING cdrom;
+    RtlInitAnsiString(&cdrom, "\\Device\\CdRom0");
+
+    OBJECT_ATTRIBUTES obj_attr;
+    InitializeObjectAttributes(&obj_attr, &cdrom, OBJ_CASE_INSENSITIVE, NULL, NULL);
+
+    HANDLE handle;
+    IO_STATUS_BLOCK io_status;
+
+    NTSTATUS status = NtOpenFile(&handle, GENERIC_READ | SYNCHRONIZE, &obj_attr, &io_status, FILE_SHARE_READ, FILE_SYNCHRONOUS_IO_NONALERT);
+    if (NT_SUCCESS(status))
+    {
+        ULONG speed = 2; // 0 ~ 2
+        NtDeviceIoControlFile(handle, NULL, NULL, NULL, &io_status, 0x24084, &speed, sizeof(speed), NULL, 0);
+    }
+    NtClose(handle);
+
     // Mount root of LithiumX xbe to Q:
     char targetPath[MAX_PATH];
     nxGetCurrentXbeNtPath(targetPath);
